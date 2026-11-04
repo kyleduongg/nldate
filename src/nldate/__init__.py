@@ -85,10 +85,15 @@ def _shift(anchor: date, duration: str, direction: int) -> date:
         else:
             days += amount * (7 if unit == "week" else 1)
         remaining = remaining[match.end() :].lstrip()
+        has_comma = remaining.startswith(",")
+        if has_comma:
+            remaining = remaining[1:].lstrip()
         if remaining.startswith("and "):
             remaining = remaining[4:]
             if not remaining:
                 raise ValueError(f"Invalid duration: {duration!r}")
+        if has_comma and not remaining:
+            raise ValueError(f"Invalid duration: {duration!r}")
     month_index = anchor.year * 12 + anchor.month - 1 + direction * months
     year, month = divmod(month_index, 12)
     month += 1

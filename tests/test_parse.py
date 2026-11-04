@@ -109,3 +109,10 @@ def test_invalid_date():
 def test_invalid_duration():
     with pytest.raises(ValueError):
         parse("and days ago", today=date(2025, 12, 1))
+
+
+# Test 20: Compound duration separated by commas
+def test_compound_duration_with_commas():
+    assert parse(
+        "2 years, 3 months before Dec. 1, 2025"
+    ) == date(2023, 9, 1)
