@@ -108,7 +108,9 @@ def _parse(text: str, today: date) -> date:
         "tomorrow": 1,
         "yesterday": -1,
         "day after tomorrow": 2,
+        "the day after tomorrow": 2,
         "day before yesterday": -2,
+        "the day before yesterday": -2,
     }
     if text in offsets:
         return today + timedelta(days=offsets[text])

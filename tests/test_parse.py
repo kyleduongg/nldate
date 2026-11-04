@@ -116,3 +116,11 @@ def test_compound_duration_with_commas():
     assert parse(
         "2 years, 3 months before Dec. 1, 2025"
     ) == date(2023, 9, 1)
+
+
+# Test 21: The day after tomorrow
+def test_the_day_after_tomorrow():
+    assert parse(
+        "the day after tomorrow",
+        today=date(2025, 12, 31),
+    ) == date(2026, 1, 2)
