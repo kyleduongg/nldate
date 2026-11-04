@@ -1,6 +1,8 @@
 
 from datetime import date
 
+import pytest
+
 from nldate import parse
 
 
@@ -83,3 +85,27 @@ def test_two_weeks_from_tomorrow():
         "two weeks from tomorrow",
         today=date(2025, 1, 10),
     ) == date(2025, 1, 25)
+
+
+# Test 16: Empty string
+def test_empty_string():
+    with pytest.raises(ValueError):
+        parse("")
+
+
+# Test 17: Unrecognized date expression
+def test_unrecognized_string():
+    with pytest.raises(ValueError):
+        parse("hello world")
+
+
+# Test 18: Invalid calendar date
+def test_invalid_date():
+    with pytest.raises(ValueError):
+        parse("February 30, 2025")
+
+
+# Test 19: Invalid relative duration
+def test_invalid_duration():
+    with pytest.raises(ValueError):
+        parse("and days ago", today=date(2025, 12, 1))

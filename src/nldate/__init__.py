@@ -39,8 +39,22 @@ def _number(text: str) -> int:
         return int(text)
     if text in {"a", "an"}:
         return 1
+    text = text.replace("-", " ")
+    units = "|".join(word for word, value in _SMALL.items() if 0 < value < 10)
+    small = "|".join(word for word, value in _SMALL.items() if value > 0)
+    tens = "|".join(_TENS)
+    under_hundred = rf"(?:(?:{small})|(?:{tens})(?: (?:{units}))?)"
+    under_thousand = (
+        rf"(?:(?:{units}) hundred(?: (?:and )?{under_hundred})?|{under_hundred})"
+    )
+    number = (
+        rf"(?:zero|{under_thousand}"
+        rf"(?: thousand(?: (?:and )?{under_thousand})?)?)"
+    )
+    if re.fullmatch(number, text) is None:
+        raise ValueError(f"Invalid number: {text!r}")
     total = current = 0
-    for word in text.replace("-", " ").split():
+    for word in text.split():
         if word in _SMALL:
             current += _SMALL[word]
         elif word in _TENS:
